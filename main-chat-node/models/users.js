@@ -31,6 +31,9 @@ const users = sequelize.define("users", {
   userImage: {
     type: DataTypes.STRING,
   },
+  otp:{
+    type: DataTypes.INTEGER
+  },
 
   createdAt: {
     type: DataTypes.STRING,

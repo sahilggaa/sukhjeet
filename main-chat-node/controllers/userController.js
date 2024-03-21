@@ -2,18 +2,39 @@ const userModel = require("../models/users");
 const { v4: uuidv4 } = require("uuid");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const speakeasy = require('speakeasy');
+
+
+const generateOTP = () => {
+  return speakeasy.totp({
+    secret: speakeasy.generateSecret().base32,
+    encoding: 'base32',
+    step: 30, // OTP refresh time in seconds
+    digits: 6 // OTP length
+  });
+};
 
 const createUser = async (req, res) => {
-  const uniqueId = generateUniqueId(); // Call the function to get the unique ID
-  const { contactNumber, name } = req.body; // Ensure you have `name` in your request body
+  const uniqueId = generateUniqueId(); // Generate unique ID
+  const { contactNumber, name } = req.body; // Extract contact number and name from request body
 
   try {
     const userImage = req.file.path;
+
+    // Function to generate OTP
+
+
+
+    // Generate OTP
+    const otp = generateOTP();
+    console.log(otp);
+    // Create user with OTP
     const user = await userModel.create({
       id: uniqueId,
       contactNumber,
       name,
       userImage,
+      otp, // Store OTP in the database
     });
 
     if (user) {
@@ -21,22 +42,22 @@ const createUser = async (req, res) => {
       const token = jwt.sign(
         { userId: user.id, name: user.name },
         process.env.JWT_SECRET,
-        { expiresIn: "6h" } // Token expiry time
+        { expiresIn: "1h" } // Token expiry time
       );
 
+      // Send response with user data and token
       res.status(200).json({
         status: "Success",
         message: "User Created Successfully",
         data: user,
-        token, // Include token in the response
+        token,
       });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error creating user" }); // Sending error response
+    res.status(500).json({ error: "Error creating user" });
   }
 };
-
 const generateUniqueId = () => {
   // Call uuidv4 function to generate a unique ID
   return uuidv4();
