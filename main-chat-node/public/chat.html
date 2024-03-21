@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
+    <style>
+      .message-container {
+        max-width: 100%;
+        margin: 0px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        /*overflow-y: auto;
+        height: 300px; /* Set max height for message container */
+      }
+      .message {
+        padding: 5px 10px;
+        margin-bottom: 5px;
+        border-radius: 5px;
+      }
+      .sent {
+        text-align: right;
+        background-color: #dcf8c6; /* Light green for sent messages */
+        width: auto;
+      }
+      .received {
+        text-align: left;
+        background-color: #e6e6e6; /* Light gray for received messages */
+        width: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <input type="text" id="userIdInput" placeholder="Enter Phone Number" />
+    <button id="joinChatButton">Join Chat</button>
+    <h3 id="chatJoinRoom"></h3>
+    <div id="messages" class="message-container"></div>
+    <input type="text" id="messageInput" placeholder="Type your message" />
+    <button id="sendMessageButton">Send</button>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const socket = io();
+        const messagesContainer = document.getElementById("messages");
+        const messageInput = document.getElementById("messageInput");
+        const sendMessageButton = document.getElementById("sendMessageButton");
+        const userIdInput = document.getElementById("userIdInput");
+
+        sendMessageButton.addEventListener("click", () => {
+          const message = messageInput.value.trim();
+          if (message !== "") {
+            socket.emit("sendMessage", userIdInput.value.trim(), message);
+            messageInput.value = "";
+          }
+        });
+
+        document
+          .getElementById("joinChatButton")
+          .addEventListener("click", () => {
+            socket.emit("joinRoom", userIdInput.value.trim());
+          });
+
+        socket.on("joinRoomResponse", (response) => {
+          if (response.success) {
+            document.getElementById(
+              "chatJoinRoom"
+            ).innerHTML = ` ${response.message}`;
+          } else {
+            alert(response.message);
+          }
+        });
+
+        socket.on("receiveMessage", (data) => {
+          if (data) {
+            const messageElement = document.createElement("div");
+            messageElement.textContent =
+              data.contactNumber + ": " + data.message;
+            messageElement.classList.add("message");
+            if (data.contactNumber === userIdInput.value.trim()) {
+              messageElement.classList.add("sent");
+            } else {
+              messageElement.classList.add("received");
+            }
+            messagesContainer.appendChild(messageElement);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight; // Scroll to bottom
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

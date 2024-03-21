@@ -1,0 +1,45 @@
+<!-- chatroom.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat Room</title>
+    <style>
+      /* Add your CSS styles here */
+    </style>
+  </head>
+  <body>
+    <div id="messages"></div>
+    <input type="text" id="messageInput" placeholder="Type your message" />
+    <button id="sendMessageButton">Send</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        var socket = io(); // Connect to the server
+        const messagesContainer = document.getElementById("messages");
+        const messageInput = document.getElementById("messageInput");
+        const sendMessageButton = document.getElementById("sendMessageButton");
+
+        sendMessageButton.addEventListener("click", () => {
+          const message = messageInput.value.trim();
+          if (message !== "") {
+            // Emit "sendMessage" event to the server with the message
+            socket.emit("sendMessage", message); // Assuming roomId is defined elsewhere
+            messageInput.value = ""; // Clear the input field
+          }
+        });
+
+        // Listen for incoming messages from the server
+        socket.on("receiveMessage", (message) => {
+          const messageElement = document.createElement("div");
+          messageElement.textContent = message;
+          messagesContainer.appendChild(messageElement);
+          // Optionally, you can scroll the messages container to the bottom to show the latest message
+          messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        });
+      });
+    </script>
+  </body>
+</html>

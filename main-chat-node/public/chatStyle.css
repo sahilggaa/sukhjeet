@@ -1,0 +1,69 @@
+/* chatStyle.css */
+
+/* Body styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+}
+
+/* Container styles */
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Message container styles */
+.message-container {
+  margin-top: 20px;
+  padding: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Input container styles */
+.input-container {
+  display: flex;
+}
+
+/* Input field styles */
+input[type="text"] {
+  flex: 1;
+  margin-right: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+/* Button styles */
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Sent message styles */
+.sent-message {
+  align-self: flex-end;
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* Received message styles */
+.received-message {
+  align-self: flex-start;
+  background-color: #f9f9f9;
+}
