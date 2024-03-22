@@ -9,8 +9,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ChatBotComponent } from './chat-bot/chat-bot.component';
 import { MaterialModule } from './Material/material/material.module';
+import { SignInComponent } from './sign-in/sign-in.component';
 @NgModule({
-  declarations: [AppComponent, LoginComponent, ChatBotComponent],
+  declarations: [AppComponent, LoginComponent, ChatBotComponent, SignInComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

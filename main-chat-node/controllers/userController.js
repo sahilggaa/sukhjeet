@@ -2,15 +2,14 @@ const userModel = require("../models/users");
 const { v4: uuidv4 } = require("uuid");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-const speakeasy = require('speakeasy');
-
+const speakeasy = require("speakeasy");
 
 const generateOTP = () => {
   return speakeasy.totp({
     secret: speakeasy.generateSecret().base32,
-    encoding: 'base32',
+    encoding: "base32",
     step: 30, // OTP refresh time in seconds
-    digits: 6 // OTP length
+    digits: 6, // OTP length
   });
 };
 
@@ -23,8 +22,6 @@ const createUser = async (req, res) => {
 
     // Function to generate OTP
 
-
-
     // Generate OTP
     const otp = generateOTP();
     console.log(otp);
@@ -34,8 +31,32 @@ const createUser = async (req, res) => {
       contactNumber,
       name,
       userImage,
-      otp, // Store OTP in the database
+      signUpOtp: otp, // Store OTP in the database
     });
+
+    if (user) {
+      // Send response with user data and token
+      res.status(200).json({
+        status: "Success",
+        message: "User Created Successfully",
+        data: user,
+        otp,
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error creating user" });
+  }
+};
+
+//Login User and Authenticating otp
+
+const authenticateOtpApi = async (req, res) => {
+  try {
+    const { contactNumber, signUpOtp } = req.body;
+    console.log(signUpOtp);
+
+    const user = await userModel.findOne({ where: { contactNumber } });
 
     if (user) {
       // Generate JWT token
@@ -44,20 +65,33 @@ const createUser = async (req, res) => {
         process.env.JWT_SECRET,
         { expiresIn: "1h" } // Token expiry time
       );
-
-      // Send response with user data and token
-      res.status(200).json({
-        status: "Success",
-        message: "User Created Successfully",
-        data: user,
-        token,
+      if (signUpOtp === user.signUpOtp) {
+        res.status(200).json({
+          status: "success",
+          message: "User Authenticated successfully",
+          user,
+          token,
+        });
+      } else {
+        res.status(400).json({
+          status: "Bad Request",
+          message: "Authentication failed",
+        });
+      }
+    } else {
+      res.status(404).json({
+        status: "Failed",
+        message: "User not found",
       });
     }
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Error creating user" });
+    res.status(500).json({
+      status: "failed",
+      message: error,
+    });
   }
 };
+
 const generateUniqueId = () => {
   // Call uuidv4 function to generate a unique ID
   return uuidv4();
@@ -103,7 +137,9 @@ const getUserById = async (req, res) => {
 const getUserByPhoneNumber = async (req, res) => {
   try {
     const contactNumber = req.query.contactNumber; // Extract contactNumber from query parameters
-    const user = await userModel.findOne({ where: { contactNumber } });
+    const user = await userModel.findOne({
+      where: { contactNumber, signUpOtp },
+    });
 
     if (user) {
       // Store contactNumber in app.locals
@@ -130,7 +166,7 @@ const getUserByPhoneNumber = async (req, res) => {
     console.error("Error fetching user:", error);
     res.status(500).json({
       status: "Error",
-      message: error.message,
+      message: error,
     });
   }
 };
@@ -139,4 +175,5 @@ module.exports = {
   createUser,
   getUserById,
   getUserByPhoneNumber,
+  authenticateOtpApi,
 };

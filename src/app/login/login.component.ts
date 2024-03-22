@@ -13,6 +13,7 @@ export class LoginComponent {
   name: string = '';
   contactNumber: string = '';
   imageFile: File | null = null;
+  signUpOtp: string = '';
 
   constructor(
     private loginService: LoginService,
@@ -39,8 +40,8 @@ export class LoginComponent {
           this.name = '';
           this.contactNumber = '';
           this.imageFile = null;
-          this._snackBar.open('Logged In successfully.', 'Ok');
-          this.router.navigateByUrl('/chat');
+          this._snackBar.open('Sign Up Successfull.', 'Ok');
+          this.router.navigateByUrl('/sign-in');
         },
         (error) => {
           console.error('Error creating user:', error);

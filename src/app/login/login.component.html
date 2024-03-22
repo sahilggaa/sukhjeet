@@ -107,6 +107,22 @@
                       aria-describedby="basic-addon4"
                     />
                   </div>
+                  <label class="form-label">OTP*</label>
+                  <div class="input-group mb-3 bg-light-subtle rounded-3">
+                    <span class="input-group-text text-muted" id="basic-addon4">
+                      <i class="ri-lock-2-line"></i>
+                    </span>
+                    <input
+                      type="file"
+                      [(ngModel)]="signUpOtp"
+                      name="signUpOtp"
+                      class="form-control form-control-lg border-light bg-light-subtle"
+                      (change)="onFileSelected($event)"
+                      placeholder="Enter The OTP"
+                      aria-label="Enter The OTP"
+                      aria-describedby="basic-addon4"
+                    />
+                  </div>
                 </div>
 
                 <div class="form-check mb-4">
@@ -125,7 +141,7 @@
                     class="btn btn-primary waves-effect waves-light"
                     type="submit"
                   >
-                    Sign in
+                    Sign Up
                   </button>
                 </div>
               </form>

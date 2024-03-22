@@ -2,11 +2,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { ChatBotComponent } from './chat-bot/chat-bot.component';
+import { SignInComponent } from './sign-in/sign-in.component';
+import { AuthGuard } from './Auth/auth.guard';
 
 const routes: Routes = [
-  { path: '', component: ChatBotComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'chat', component: ChatBotComponent },
+  { path: '', component: SignInComponent },
+  { path: 'sign-up', component: LoginComponent },
+  { path: 'chat', component: ChatBotComponent, canActivate: [AuthGuard] },
+  { path: 'sign-in', component: SignInComponent },
 ];
 
 @NgModule({
