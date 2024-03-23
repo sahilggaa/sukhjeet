@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const userRoutes = require("./routes/userRoutes");
 const http = require("http");
 const socketIO = require("socket.io");
+const messagesController = require("./controllers/messagesController");
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server); // Socket.IO initialized with HTTP server
@@ -66,7 +67,6 @@ io.on("connection", function (socket) {
 
       // console.log(user);
       if (user) {
-        const userName = user.name;
         const contactNumber = user.contactNumber;
         console.log(contactNumber);
         roomIdentifier = `room-${roomId}`;
@@ -96,8 +96,15 @@ io.on("connection", function (socket) {
   // Handle sending messages
   socket.on("sendMessage", (contactNumber, message) => {
     // Broadcast the message to all clients in the room along with the user ID
-
-    io.to(roomIdentifier).emit("receiveMessage", { contactNumber, message });
+    io.to(roomIdentifier).emit("receiveMessage", {
+      contactNumber,
+      message,
+    });
+    messagesController.storeMessage({
+      contactNumber: contactNumber,
+      message: message,
+      roomId: roomIdentifier,
+    });
   });
 
   // Handle disconnection

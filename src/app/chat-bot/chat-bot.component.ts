@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../Services/login.service';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-chat-bot',
@@ -7,7 +9,11 @@ import { LoginService } from '../Services/login.service';
   styleUrls: ['./chat-bot.component.css'],
 })
 export class ChatBotComponent implements OnInit {
-  constructor(private loginService: LoginService) {}
+  constructor(
+    private loginService: LoginService,
+    private router: Router,
+    private _snackBar: MatSnackBar
+  ) {}
 
   userData: any;
   name: String = '';
@@ -20,5 +26,10 @@ export class ChatBotComponent implements OnInit {
     this.contactNumber = this.userData.user.contactNumber;
     console.log('User Data:', this.userData, this);
     console.log(this.name);
+  }
+  onLogout() {
+    this.loginService.logout();
+    this._snackBar.open('User Logged Out', 'OK');
+    this.router.navigateByUrl('/sign-in');
   }
 }

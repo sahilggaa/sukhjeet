@@ -1,33 +1,31 @@
 const messageModel = require("../models/messages");
 const { v4: uuidv4 } = require("uuid");
 
-const storeMessage = async (req, res) => {
+const generateUniqueId = () => {
+  // Call uuidv4 function to generate a unique ID
+  return uuidv4();
+};
+
+const storeMessage = async ({ contactNumber, message, roomId }) => {
   const uniqueId = generateUniqueId();
-  const { content, roomId, senderContact, recieverContact } = req.body;
 
   try {
     const messageCreate = await messageModel.create({
       id: uniqueId,
-      content,
+      contactNumber,
+      message,
       roomId,
-      senderContact,
-      recieverContact,
     });
     if (messageCreate) {
-      res.status(200).json({
-        status: success,
-        message: "Message stored successfully.",
-        data: messageCreate,
-      });
+      console.log("Message stored successfully:", messageCreate);
+      return messageCreate; // Return the created message
     }
   } catch (error) {
-    res.json({
-      error: error.message,
-    });
+    console.error("Error storing message:", error);
+    throw error; // Rethrow the error to handle it in the calling code
   }
-  const generateUniqueId = () => {
-    // Call uuidv4 function to generate a unique ID
-    return uuidv4();
-  };
 };
-module.exports = storeMessage;
+
+module.exports = {
+  storeMessage: storeMessage,
+};

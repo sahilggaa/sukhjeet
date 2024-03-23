@@ -21,22 +21,19 @@ const Message = sequelize.define("Message", {
     allowNull: false,
     unique: true,
   },
-  content: {
+  contactNumber: {
     type: DataTypes.STRING,
+    allowNull: false,
+  },
+  message: {
+    type: DataTypes, // Use DataTypes instead of Sequelize
     allowNull: false,
   },
   roomId: {
-    type: DataTypes.INTEGER, // Use DataTypes instead of Sequelize
-    allowNull: false,
-  },
-  senderContact: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  receiverContact: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
+
   createdAt: {
     type: DataTypes.DATE, // Use DATE for createdAt and updatedAt fields
     defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
@@ -50,13 +47,13 @@ const Message = sequelize.define("Message", {
 });
 
 // Sync the model with the database
-(async () => {
-  try {
-    await sequelize.sync({ alter: true }); // Sync the model with the database, alter: true will update the table structure if necessary
-    console.log("Database synchronized");
-  } catch (error) {
-    console.error("Error syncing database:", error);
-  }
-})();
+// (async () => {
+//   try {
+//     await sequelize.sync({ alter: true }); // Sync the model with the database, alter: true will update the table structure if necessary
+//     console.log("Database synchronized");
+//   } catch (error) {
+//     console.error("Error syncing database:", error);
+//   }
+// })();
 
 module.exports = Message; // Export the model

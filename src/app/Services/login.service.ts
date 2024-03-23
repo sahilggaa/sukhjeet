@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private _snackBar: MatSnackBar) {}
 
   private apiUrl1 = 'http://localhost:3000/api/new-user';
   private apiUrl2 = 'http://localhost:3000/api/authenticate-otp';
@@ -39,5 +40,10 @@ export class LoginService {
 
   getUserData(): any {
     return this.userData;
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    console.log(localStorage.getItem('token'));
   }
 }

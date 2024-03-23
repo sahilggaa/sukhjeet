@@ -11,6 +11,7 @@ export class AuthGuard implements CanActivate {
     const token = localStorage.getItem('token');
     if (token) {
       // Token exists, so the user is authenticated
+      console.log(token);
       return true;
     } else {
       // Token doesn't exist, redirect to login page
