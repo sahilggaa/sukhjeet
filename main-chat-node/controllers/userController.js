@@ -19,7 +19,8 @@ const createUser = async (req, res) => {
 
   try {
     const userImage = req.file.path;
-
+    const fileName = userImage.split("\\").pop();
+    console.log(fileName);
     // Function to generate OTP
 
     // Generate OTP
@@ -30,7 +31,7 @@ const createUser = async (req, res) => {
       id: uniqueId,
       contactNumber,
       name,
-      userImage,
+      userImage: fileName,
       signUpOtp: otp, // Store OTP in the database
     });
 
@@ -63,7 +64,7 @@ const authenticateOtpApi = async (req, res) => {
       const token = jwt.sign(
         { userId: user.id, name: user.name },
         process.env.JWT_SECRET,
-        { expiresIn: "1h" } // Token expiry time
+        { expiresIn: "10s" } // Token expiry time
       );
       if (signUpOtp === user.signUpOtp) {
         res.status(200).json({

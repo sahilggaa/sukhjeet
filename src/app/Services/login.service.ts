@@ -11,7 +11,7 @@ export class LoginService {
   private apiUrl1 = 'http://localhost:3000/api/new-user';
   private apiUrl2 = 'http://localhost:3000/api/authenticate-otp';
 
-  isAuthenticated = false;
+  userData: any;
 
   createUser(name: any, contactNumber: any, imageFile: File): Observable<any> {
     const formData: FormData = new FormData();
@@ -22,13 +22,22 @@ export class LoginService {
     return this.http.post(this.apiUrl1, formData);
   }
 
+  private storeUserData(response: any): void {
+    this.userData = response;
+  }
+
   authenticateUser(contactNumber: string, signUpOtp: string): Observable<any> {
     return this.http.post<any>(this.apiUrl2, { contactNumber, signUpOtp }).pipe(
       tap((response) => {
         if (response && response.token) {
           localStorage.setItem('token', response.token);
+          this.storeUserData(response); // Store response in service variable
         }
       })
     );
+  }
+
+  getUserData(): any {
+    return this.userData;
   }
 }
