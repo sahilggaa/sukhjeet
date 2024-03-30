@@ -4,7 +4,7 @@ import { io } from 'socket.io-client';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SocketService {
   private socket: any;
@@ -13,19 +13,15 @@ export class SocketService {
     this.socket = io('http://localhost:3000'); // Replace 'http://your-server-url' with your Socket.IO server URL
   }
 
-  joinRoom(contactNumber: string) {
+  public joinRoom(contactNumber: any): void {
     this.socket.emit('joinRoom', contactNumber);
   }
 
-  sendMessage(contactNumber: string, message: string) {
+  public sendMessage(contactNumber: any, message: any): void {
     this.socket.emit('sendMessage', contactNumber, message);
   }
 
-  receiveMessage(): Observable<any> {
-    return new Observable((observer) => {
-      this.socket.on('receiveMessage', (data: any) => {
-        observer.next(data);
-      });
-    });
+  public receiveMessage(callback: (data: any) => void): void {
+    this.socket.on('receiveMessage', callback);
   }
 }

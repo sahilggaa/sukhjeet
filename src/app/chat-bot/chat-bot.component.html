@@ -93,8 +93,6 @@
           data-bs-placement="top"
           title="Settings"
         >
-
-
           <a
             class="nav-link"
             id="pills-setting-tab"
@@ -667,7 +665,7 @@
 
                       <div class="flex-grow-1 overflow-hidden">
                         <h5 class="text-truncate font-size-15 mb-1">
-                          Patrick Hendricks
+                          {{ name }}
                         </h5>
                         <p class="chat-user-message text-truncate mb-0">
                           Hey! there I'm available
@@ -3929,3 +3927,14 @@
   </div>
   <!-- end  layout wrapper -->
 </div>
+
+<!-- Testing code -->
+
+<!-- <div *ngFor="let message of receivedMessages">
+  <div>{{ message.contactNumber }}: {{ message.message }}</div>
+</div>
+
+<input type="text" [(ngModel)]="messages" placeholder="Enter message" />
+<button (click)="sendMessage()">Send</button>
+
+<button (click)="onLogout()">Logout</button> -->

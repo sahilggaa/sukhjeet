@@ -11,7 +11,12 @@ import { ChatBotComponent } from './chat-bot/chat-bot.component';
 import { MaterialModule } from './Material/material/material.module';
 import { SignInComponent } from './sign-in/sign-in.component';
 @NgModule({
-  declarations: [AppComponent, LoginComponent, ChatBotComponent, SignInComponent],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    ChatBotComponent,
+    SignInComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

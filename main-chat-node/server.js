@@ -7,9 +7,21 @@ const socketIO = require("socket.io");
 const messagesController = require("./controllers/messagesController");
 const app = express();
 const server = http.createServer(app);
-const io = socketIO(server); // Socket.IO initialized with HTTP server
+const io = socketIO(server, {
+  cors: {
+    origin: "http://localhost:4200",
+    methods: ["GET", "POST"],
+  },
+});
 const cors = require("cors");
-app.use(cors());
+
+// Configure CORS for Express routes
+app.use(
+  cors({
+    origin: "http://localhost:4200",
+    methods: ["GET", "POST"],
+  })
+);
 
 const userModel = require("./models/users");
 require("dotenv").config();
@@ -120,3 +132,5 @@ server.listen(PORT, () => {
 });
 
 // server.listen();
+
+// io.listen(3000);

@@ -14,40 +14,44 @@ export class ChatBotComponent implements OnInit {
     private loginService: LoginService,
     private router: Router,
     private _snackBar: MatSnackBar,
-    private socketService:SocketService
+    private socketService: SocketService
   ) {}
 
   userData: any;
-  name: String = '';
-  contactNumber: String = '';
-  userImage: String = '';
-  messages:any[]=[];
+  name: string = '';
+  contactNumber: string = '';
+  userImage: string = '';
+  messages: string = '';
+  receivedMessages: any[] = []; // Array to store received messages
 
   ngOnInit(): void {
     this.userData = this.loginService.getUserData();
     this.name = this.userData.user.name;
     this.userImage = this.userData.user.userImage;
     this.contactNumber = this.userData.user.contactNumber;
-    this.socketService.receiveMessage().subscribe((data: any) => {
-      this.messages.push(data);
+
+    // Example: Joining a room
+    this.socketService.joinRoom(this.contactNumber);
+
+    // Example: Receiving messages
+    this.socketService.receiveMessage((data: any) => {
+      console.log('Received message:', data);
+      this.receivedMessages.push(data); // Push received message to array
     });
+
     console.log('User Data:', this.userData, this);
     console.log(this.name);
   }
 
-  joinRoom(contactNumber: string) {
-    this.socketService.joinRoom(contactNumber);
+  sendMessage(): void {
+    // Example: Sending a message
+    this.socketService.sendMessage(this.contactNumber, this.messages);
+    this.messages = '';
   }
-
-  sendMessage(contactNumber: string, message: string) {
-    this.socketService.sendMessage(contactNumber, message);
-  }
-
-
 
   onLogout() {
     this.loginService.logout();
     this._snackBar.open('User Logged Out', 'OK');
-    this.router.navigateByUrl('/sign-in');
+    this.router.navigateByUrl('sign-in');
   }
 }
