@@ -24,6 +24,7 @@
     "git": "^0.1.5",
     "jsonwebtoken": "^9.0.2",
     "rxjs": "~7.8.0",
+    "socket.io-client": "^4.7.5",
     "speakeasy": "^2.0.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"

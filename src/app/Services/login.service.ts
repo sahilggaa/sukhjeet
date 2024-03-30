@@ -32,6 +32,7 @@ export class LoginService {
       tap((response) => {
         if (response && response.token) {
           localStorage.setItem('token', response.token);
+          localStorage.setItem('contactNumber', response.contactNumber)
           this.storeUserData(response); // Store response in service variable
         }
       })

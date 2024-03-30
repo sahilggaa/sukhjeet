@@ -93,15 +93,7 @@
           data-bs-placement="top"
           title="Settings"
         >
-          <a
-            class="nav-link"
-            id="pills-setting-tab"
-            data-bs-toggle="pill"
-            role="tab"
-            (click)="onLogout()"
-          >
-            <i class="ri-settings-2-line"></i>
-          </a>
+
 
           <a
             class="nav-link"
@@ -138,7 +130,7 @@
               >Setting <i class="ri-settings-3-line float-end text-muted"></i
             ></a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" routerLink="/sign-in"
+            <a class="dropdown-item" (click)="onLogout()"
               >Log out
               <i class="ri-logout-circle-r-line float-end text-muted"></i
             ></a>

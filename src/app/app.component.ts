@@ -1,4 +1,7 @@
+// app.component.ts
+
 import { Component } from '@angular/core';
+import { SocketService } from './Services/socket.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +9,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'chat-bot-app-ang';
+  message: string = '';
+  receivedMessage: string = '';
+
+  constructor(private socketService: SocketService) { }
+
+
 }

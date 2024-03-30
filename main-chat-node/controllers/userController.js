@@ -18,6 +18,8 @@ const createUser = async (req, res) => {
   const { contactNumber, name } = req.body; // Extract contact number and name from request body
 
   try {
+
+
     const userImage = req.file.path;
     const fileName = userImage.split("\\").pop();
     console.log(fileName);
@@ -98,6 +100,7 @@ const generateUniqueId = () => {
   return uuidv4();
 };
 
+
 const getUserById = async (req, res) => {
   const userId = req.params.id;
   try {
@@ -134,6 +137,7 @@ const getUserById = async (req, res) => {
     });
   }
 };
+
 
 const getUserByPhoneNumber = async (req, res) => {
   try {
@@ -178,3 +182,4 @@ module.exports = {
   getUserByPhoneNumber,
   authenticateOtpApi,
 };
+
